@@ -6,9 +6,18 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class Mouse
 {
-    private ?string $name = null;
-    private ?EngineInterface $engine = null;
-    private array $colors = [];
+    /**
+     * @var string|null
+     */
+    private $name;
+    /**
+     * @var \Yiisoft\Definitions\Tests\Support\EngineInterface|null
+     */
+    private $engine;
+    /**
+     * @var mixed[]
+     */
+    private $colors = [];
 
     public function setNameAndEngine(string $name, EngineInterface $engine): void
     {

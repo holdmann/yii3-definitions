@@ -6,9 +6,16 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class UnionBuiltinDependency
 {
-    public function __construct(
-        private string|int $value
-    ) {
+    /**
+     * @var string|int
+     */
+    private $value;
+    /**
+     * @param string|int $value
+     */
+    public function __construct($value)
+    {
+        $this->value = $value;
     }
 
     public function getValue()

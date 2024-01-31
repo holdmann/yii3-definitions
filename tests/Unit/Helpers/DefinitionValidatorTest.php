@@ -57,25 +57,31 @@ final class DefinitionValidatorTest extends TestCase
     public function dataInvalidProperty(): array
     {
         $object1 = new class () {
-            public bool $visible = true;
-            private bool $invisible = true;
+            /**
+             * @var bool
+             */
+            public $visible = true;
+            /**
+             * @var bool
+             */
+            private $invisible = true;
         };
         return [
             [stdClass::class, '$', 'Invalid definition: class "stdClass" does not have any public properties.'],
             [
-                $object1::class,
+                get_class($object1),
                 '$1',
                 sprintf(
                     'Invalid definition: class "%s" does not have the public property with name "1". Possible properties to set: "visible".',
-                    $object1::class
+                    get_class($object1)
                 ),
             ],
             [
-                $object1::class,
+                get_class($object1),
                 '$invisible',
                 sprintf(
                     'Invalid definition: property "%s" must be public.',
-                    $object1::class . '::$invisible',
+                    get_class($object1) . '::$invisible',
                 ),
             ],
             [

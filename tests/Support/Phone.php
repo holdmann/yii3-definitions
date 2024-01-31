@@ -6,20 +6,51 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class Phone
 {
-    private ?string $id = null;
-    private array $colors;
-    private array $apps = [];
-    private ?string $author = null;
-    private ?string $country = null;
+    /**
+     * @var string|null
+     */
+    private $id;
+    /**
+     * @var mixed[]
+     */
+    private $colors;
+    /**
+     * @var mixed[]
+     */
+    private $apps = [];
+    /**
+     * @var string|null
+     */
+    private $author;
+    /**
+     * @var string|null
+     */
+    private $country;
 
-    public bool $dev = false;
-    public ?string $codeName = null;
+    /**
+     * @var bool
+     */
+    public $dev = false;
+    /**
+     * @var string|null
+     */
+    public $codeName;
+    /**
+     * @var string|null
+     */
+    private $name;
+    /**
+     * @var string|null
+     */
+    private $version;
 
     public function __construct(
-        private ?string $name = null,
-        private ?string $version = null,
+        ?string $name = null,
+        ?string $version = null,
         ...$colors
     ) {
+        $this->name = $name;
+        $this->version = $version;
         $this->colors = $colors;
     }
 

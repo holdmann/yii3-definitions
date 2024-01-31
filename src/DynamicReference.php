@@ -32,12 +32,16 @@ use function is_object;
  */
 final class DynamicReference implements ReferenceInterface
 {
-    private DefinitionInterface $definition;
+    /**
+     * @var \Yiisoft\Definitions\Contract\DefinitionInterface
+     */
+    private $definition;
 
     /**
      * @throws InvalidConfigException
+     * @param mixed $definition
      */
-    private function __construct(mixed $definition)
+    private function __construct($definition)
     {
         if (is_object($definition) && !is_callable($definition)) {
             throw new InvalidConfigException('DynamicReference don\'t support object as definition.');
@@ -50,13 +54,18 @@ final class DynamicReference implements ReferenceInterface
      * @see Normalizer
      *
      * @throws InvalidConfigException If definition is not valid.
+     * @param mixed $id
+     * @return $this
      */
-    public static function to(mixed $id): self
+    public static function to($id): \Yiisoft\Definitions\Contract\ReferenceInterface
     {
         return new self($id);
     }
 
-    public function resolve(ContainerInterface $container): mixed
+    /**
+     * @return mixed
+     */
+    public function resolve(ContainerInterface $container)
     {
         return $this->definition->resolve($container);
     }

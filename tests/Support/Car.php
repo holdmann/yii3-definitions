@@ -6,12 +6,23 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class Car
 {
-    public ?ColorInterface $color = null;
+    /**
+     * @var \Yiisoft\Definitions\Tests\Support\ColorInterface|null
+     */
+    public $color;
+    /**
+     * @var \Yiisoft\Definitions\Tests\Support\EngineInterface
+     */
+    private $engine;
+    /**
+     * @var mixed[]
+     */
+    private $moreEngines = [];
 
-    public function __construct(
-        private EngineInterface $engine,
-        private array $moreEngines = []
-    ) {
+    public function __construct(EngineInterface $engine, array $moreEngines = [])
+    {
+        $this->engine = $engine;
+        $this->moreEngines = $moreEngines;
     }
 
     public function getEngine(): EngineInterface

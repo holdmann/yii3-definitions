@@ -35,18 +35,31 @@ final class ArrayDefinition implements DefinitionInterface
 
     /**
      * Container used to resolve references.
+     * @var \Psr\Container\ContainerInterface|null
      */
-    private ?ContainerInterface $referenceContainer = null;
+    private $referenceContainer;
+    /**
+     * @var string
+     */
+    private $class;
+    /**
+     * @var mixed[]
+     */
+    private $constructorArguments;
+    /**
+     * @var mixed[]
+     */
+    private $methodsAndProperties;
 
     /**
      * @psalm-param class-string $class
      * @psalm-param array<string, MethodOrPropertyItem> $methodsAndProperties
      */
-    private function __construct(
-        private string $class,
-        private array $constructorArguments,
-        private array $methodsAndProperties
-    ) {
+    private function __construct(string $class, array $constructorArguments, array $methodsAndProperties)
+    {
+        $this->class = $class;
+        $this->constructorArguments = $constructorArguments;
+        $this->methodsAndProperties = $methodsAndProperties;
     }
 
     /**

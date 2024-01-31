@@ -49,12 +49,13 @@ final class DefinitionResolver
      * This function resolves a definition recursively, checking for loops.
      *
      * @param mixed $definition Definition to resolve.
+     * @return mixed
      */
     public static function resolve(
         ContainerInterface $container,
         ?ContainerInterface $referenceContainer,
-        mixed $definition
-    ): mixed {
+        $definition
+    ) {
         if ($definition instanceof DefinitionInterface) {
             $container = $referenceContainer !== null && $definition instanceof ReferenceInterface
                 ? $referenceContainer
@@ -69,8 +70,10 @@ final class DefinitionResolver
 
     /**
      * @throws InvalidConfigException
+     * @return mixed[]|\Yiisoft\Definitions\Contract\ReferenceInterface|\Yiisoft\Definitions\ValueDefinition
+     * @param mixed $value
      */
-    public static function ensureResolvable(mixed $value): array|ReferenceInterface|ValueDefinition
+    public static function ensureResolvable($value)
     {
         if ($value instanceof ReferenceInterface || is_array($value)) {
             return $value;

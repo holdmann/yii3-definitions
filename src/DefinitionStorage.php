@@ -20,18 +20,29 @@ final class DefinitionStorage
     /**
      * @var array<string,1>
      */
-    private array $buildStack = [];
+    private $buildStack = [];
 
-    private ?ContainerInterface $delegateContainer = null;
+    /**
+     * @var \Psr\Container\ContainerInterface|null
+     */
+    private $delegateContainer;
+    /**
+     * @var array
+     */
+    private $definitions = [];
+    /**
+     * @var bool
+     */
+    private $useStrictMode = false;
 
     /**
      * @param array $definitions Definitions to store.
      * @param bool $useStrictMode If every dependency should be defined explicitly including classes.
      */
-    public function __construct(
-        private array $definitions = [],
-        private bool $useStrictMode = false
-    ) {
+    public function __construct(array $definitions = [], bool $useStrictMode = false)
+    {
+        $this->definitions = $definitions;
+        $this->useStrictMode = $useStrictMode;
     }
 
     /**
@@ -72,7 +83,7 @@ final class DefinitionStorage
      *
      * @return mixed|object Definition with a given ID.
      */
-    public function get(string $id): mixed
+    public function get(string $id)
     {
         if (!$this->has($id)) {
             throw new RuntimeException("Service $id doesn't exist in DefinitionStorage.");
@@ -86,7 +97,7 @@ final class DefinitionStorage
      * @param string $id ID to set definition for.
      * @param mixed $definition Definition to set.
      */
-    public function set(string $id, mixed $definition): void
+    public function set(string $id, $definition): void
     {
         $this->definitions[$id] = $definition;
     }
@@ -117,7 +128,7 @@ final class DefinitionStorage
 
         try {
             $dependencies = DefinitionExtractor::fromClassName($id);
-        } catch (Throwable) {
+        } catch (Throwable $exception) {
             $this->buildStack += $building + [$id => 1];
             return false;
         }

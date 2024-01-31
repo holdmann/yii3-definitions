@@ -6,8 +6,14 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class UTF8User
 {
-    public string $айди;
-    private string $имя;
+    /**
+     * @var string
+     */
+    public $айди;
+    /**
+     * @var string
+     */
+    private $имя;
 
     public function установитьИмя(string $v): void
     {

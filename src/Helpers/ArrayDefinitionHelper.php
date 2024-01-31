@@ -40,7 +40,7 @@ final class ArrayDefinitionHelper
                     continue;
                 }
 
-                if (str_ends_with($key, '()')) {
+                if (substr_compare($key, '()', -strlen('()')) === 0) {
                     if (!is_array($value)) {
                         throw ExceptionHelper::incorrectArrayDefinitionMethodArguments($key, $value);
                     }

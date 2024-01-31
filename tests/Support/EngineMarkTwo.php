@@ -8,7 +8,10 @@ final class EngineMarkTwo implements EngineInterface
 {
     public const NAME = 'Mark Two';
 
-    private int $number;
+    /**
+     * @var int
+     */
+    private $number;
 
     public function getName(): string
     {

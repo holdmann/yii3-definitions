@@ -21,8 +21,9 @@ final class DefinitionExtractor
 {
     /**
      * @psalm-var array<string, array<string, ParameterDefinition>>
+     * @var mixed[]
      */
-    private static array $dependencies = [];
+    private static $dependencies = [];
 
     /**
      * Extract dependency definitions from type hints of a class constructor parameters.
@@ -42,7 +43,7 @@ final class DefinitionExtractor
 
         try {
             $reflectionClass = new ReflectionClass($class);
-        } catch (ReflectionException) {
+        } catch (ReflectionException $exception) {
             throw new NotInstantiableClassException($class);
         }
 

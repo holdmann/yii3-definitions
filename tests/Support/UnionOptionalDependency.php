@@ -6,9 +6,10 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class UnionOptionalDependency
 {
-    public function __construct(
-        private $value = null
-    ) {
+    private $value = null;
+    public function __construct($value = null)
+    {
+        $this->value = $value;
     }
 
     public function getValue()

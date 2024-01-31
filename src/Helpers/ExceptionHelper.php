@@ -11,7 +11,10 @@ use Yiisoft\Definitions\Exception\InvalidConfigException;
  */
 final class ExceptionHelper
 {
-    public static function invalidArrayDefinitionKey(int|string $key): InvalidConfigException
+    /**
+     * @param int|string $key
+     */
+    public static function invalidArrayDefinitionKey($key): InvalidConfigException
     {
         return new InvalidConfigException(
             sprintf(
@@ -21,7 +24,10 @@ final class ExceptionHelper
         );
     }
 
-    public static function incorrectArrayDefinitionConstructorArguments(mixed $value): InvalidConfigException
+    /**
+     * @param mixed $value
+     */
+    public static function incorrectArrayDefinitionConstructorArguments($value): InvalidConfigException
     {
         return new InvalidConfigException(
             sprintf(
@@ -31,7 +37,10 @@ final class ExceptionHelper
         );
     }
 
-    public static function incorrectArrayDefinitionMethodArguments(string $key, mixed $value): InvalidConfigException
+    /**
+     * @param mixed $value
+     */
+    public static function incorrectArrayDefinitionMethodArguments(string $key, $value): InvalidConfigException
     {
         return new InvalidConfigException(
             sprintf(

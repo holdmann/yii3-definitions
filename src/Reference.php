@@ -28,13 +28,22 @@ use function is_string;
  */
 final class Reference implements ReferenceInterface
 {
-    private string $id;
+    /**
+     * @var string
+     */
+    private $id;
+    /**
+     * @var bool
+     */
+    private $optional;
 
     /**
      * @throws InvalidConfigException
+     * @param mixed $id
      */
-    private function __construct(mixed $id, private bool $optional)
+    private function __construct($id, bool $optional)
     {
+        $this->optional = $optional;
         if (!is_string($id)) {
             throw new InvalidConfigException('Reference ID must be string.');
         }
@@ -44,8 +53,10 @@ final class Reference implements ReferenceInterface
 
     /**
      * @throws InvalidConfigException If ID is not string.
+     * @param mixed $id
+     * @return $this
      */
-    public static function to(mixed $id): self
+    public static function to($id): \Yiisoft\Definitions\Contract\ReferenceInterface
     {
         return new self($id, false);
     }
@@ -57,12 +68,15 @@ final class Reference implements ReferenceInterface
      *
      * @throws InvalidConfigException If ID is not string.
      */
-    public static function optional(mixed $id): self
+    public static function optional($id): self
     {
         return new self($id, true);
     }
 
-    public function resolve(ContainerInterface $container): mixed
+    /**
+     * @return mixed
+     */
+    public function resolve(ContainerInterface $container)
     {
         return (!$this->optional || $container->has($this->id)) ? $container->get($this->id) : null;
     }

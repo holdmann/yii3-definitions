@@ -29,7 +29,7 @@ final class DefinitionValidator
      * @throws InvalidConfigException If definition is not valid.
      * @throws ReflectionException
      */
-    public static function validate(mixed $definition, ?string $id = null): void
+    public static function validate($definition, ?string $id = null): void
     {
         // Reference or ready object
         if (is_object($definition) && self::isValidObject($definition)) {
@@ -69,10 +69,13 @@ final class DefinitionValidator
      */
     public static function validateArrayDefinition(array $definition, ?string $id = null): void
     {
+        if ($id === null) {
+            throw new InvalidConfigException(
+                'Invalid definition: no class name specified.'
+            );
+        }
         /** @var class-string $className */
-        $className = $definition[ArrayDefinition::CLASS_NAME] ?? $id ?? throw new InvalidConfigException(
-            'Invalid definition: no class name specified.'
-        );
+        $className = $definition[ArrayDefinition::CLASS_NAME] ?? $id;
         self::validateString($className);
         $classReflection = new ReflectionClass($className);
         $classPublicMethods = [];
@@ -109,7 +112,7 @@ final class DefinitionValidator
                 self::validateMethod($methodArray[0], $classReflection, $classPublicMethods, $className, $value);
                 continue;
             }
-            if (str_starts_with($key, '$')) {
+            if (strncmp($key, '$', strlen('$')) === 0) {
                 self::validateProperty($key, $classReflection, $classPublicProperties, $className);
                 continue;
             }
@@ -181,13 +184,14 @@ final class DefinitionValidator
      * @param string[] $classPublicMethods
      *
      * @throws InvalidConfigException
+     * @param mixed $value
      */
     private static function validateMethod(
         string $methodName,
         ReflectionClass $classReflection,
         array $classPublicMethods,
         string $className,
-        mixed $value
+        $value
     ): void {
         if (!$classReflection->hasMethod($methodName)) {
             if ($classReflection->hasMethod('__call') || $classReflection->hasMethod('__callStatic')) {
@@ -268,8 +272,9 @@ final class DefinitionValidator
 
     /**
      * @throws InvalidConfigException
+     * @param mixed $value
      */
-    private static function validateConstructor(mixed $value): void
+    private static function validateConstructor($value): void
     {
         if (!is_array($value)) {
             throw ExceptionHelper::incorrectArrayDefinitionConstructorArguments($value);
@@ -310,8 +315,9 @@ final class DefinitionValidator
 
     /**
      * @throws InvalidConfigException
+     * @param mixed $class
      */
-    private static function validateString(mixed $class): void
+    private static function validateString($class): void
     {
         if (!is_string($class)) {
             throw new InvalidConfigException(
