@@ -33,10 +33,9 @@ final class ParameterDefinitionTest extends TestCase
     public function dataIsVariadic(): array
     {
         $parameters = $this->getParameters(
-            static fn (
-                string $a,
-                string ...$b
-            ): bool => true
+            static function (string $a, string ...$b) : bool {
+                return true;
+            }
         );
 
         return [
@@ -58,10 +57,9 @@ final class ParameterDefinitionTest extends TestCase
     public function dataIsOptional(): array
     {
         $parameters = $this->getParameters(
-            static fn (
-                string $a,
-                string $b = 'b'
-            ): bool => true
+            static function (string $a, string $b = 'b') : bool {
+                return true;
+            }
         );
 
         return [
@@ -83,12 +81,9 @@ final class ParameterDefinitionTest extends TestCase
     public function dataHasValue(): array
     {
         $parameters = $this->getParameters(
-            static fn (
-                string $a,
-                ?string $b,
-                string $c = null,
-                string $d = 'hello'
-            ): bool => true
+            static function (string $a, ?string $b, string $c = null, string $d = 'hello') : bool {
+                return true;
+            }
         );
 
         return [
@@ -111,7 +106,9 @@ final class ParameterDefinitionTest extends TestCase
 
     public function testResolveWithIncorrectTypeInContainer(): void
     {
-        $definition = new ParameterDefinition($this->getFirstParameter(fn (stdClass $class) => true));
+        $definition = new ParameterDefinition($this->getFirstParameter(function (stdClass $class) {
+            return true;
+        }));
 
         $container = new SimpleContainer([stdClass::class => 42]);
 
@@ -140,15 +137,21 @@ final class ParameterDefinitionTest extends TestCase
         return [
             'defaultValue' => [
                 7,
-                $this->getFirstParameter(static fn (int $n = 7) => true),
+                $this->getFirstParameter(static function (int $n = 7) {
+                    return true;
+                }),
             ],
             'defaultNull' => [
                 null,
-                $this->getFirstParameter(static fn (int $n = null) => true),
+                $this->getFirstParameter(static function (int $n = null) {
+                    return true;
+                }),
             ],
             'nullableAndDefaultNull' => [
                 null,
-                $this->getFirstParameter(static fn (?int $n = null) => true),
+                $this->getFirstParameter(static function (?int $n = null) {
+                    return true;
+                }),
             ],
         ];
     }
@@ -168,7 +171,9 @@ final class ParameterDefinitionTest extends TestCase
     {
         $definition = new ParameterDefinition(
             $this->getFirstParameter(
-                static fn ($x) => true,
+                static function ($x) {
+                    return true;
+                },
             )
         );
         $container = new SimpleContainer();
@@ -186,7 +191,9 @@ final class ParameterDefinitionTest extends TestCase
     {
         $definition = new ParameterDefinition(
             $this->getFirstParameter(
-                static fn (int $n) => true,
+                static function (int $n) {
+                    return true;
+                },
             )
         );
         $container = new SimpleContainer();
@@ -247,10 +254,14 @@ final class ParameterDefinitionTest extends TestCase
                 }
                 throw new NotFoundException($id);
             },
-            static fn (string $id): bool => $id === RuntimeExceptionDependency::class
+            static function (string $id) : bool {
+                return $id === RuntimeExceptionDependency::class;
+            }
         );
         $definition = new ParameterDefinition(
-            $this->getFirstParameter(static fn (?RuntimeExceptionDependency $d = null) => 42),
+            $this->getFirstParameter(static function (?RuntimeExceptionDependency $d = null) {
+                return 42;
+            }),
         );
 
         $this->expectException(RuntimeException::class);
@@ -268,10 +279,14 @@ final class ParameterDefinitionTest extends TestCase
                 }
                 throw new NotFoundException($id);
             },
-            static fn (string $id): bool => $id === CircularReferenceExceptionDependency::class
+            static function (string $id) : bool {
+                return $id === CircularReferenceExceptionDependency::class;
+            }
         );
         $definition = new ParameterDefinition(
-            $this->getFirstParameter(static fn (?CircularReferenceExceptionDependency $d = null) => 42),
+            $this->getFirstParameter(static function (?CircularReferenceExceptionDependency $d = null) {
+                return 42;
+            }),
         );
 
         $result = $definition->resolve($container);
@@ -286,7 +301,9 @@ final class ParameterDefinitionTest extends TestCase
         ]);
 
         $definition = new ParameterDefinition(
-            $this->getFirstParameter(fn (GearBox|stdClass $class) => true)
+            $this->getFirstParameter(function ($class) {
+                return true;
+            })
         );
         $result = $definition->resolve($container);
 
@@ -298,7 +315,9 @@ final class ParameterDefinitionTest extends TestCase
         $class = GearBox::class . '|' . stdClass::class;
 
         $definition = new ParameterDefinition(
-            $this->getFirstParameter(fn (GearBox|stdClass $class) => true)
+            $this->getFirstParameter(function ($class) {
+                return true;
+            })
         );
 
         $container = new SimpleContainer([
@@ -319,7 +338,9 @@ final class ParameterDefinitionTest extends TestCase
             'Is there a real case?'
         );
 
-        $definition = new ParameterDefinition($this->getFirstParameter(fn (stdClass|GearBox $class) => true));
+        $definition = new ParameterDefinition($this->getFirstParameter(function ($class) {
+            return true;
+        }));
 
         $container = new SimpleContainer([
             stdClass::class => 42,
@@ -376,10 +397,14 @@ final class ParameterDefinitionTest extends TestCase
                 }
                 throw new NotFoundException($id);
             },
-            static fn (string $id): bool => $id === RuntimeExceptionDependency::class
+            static function (string $id) : bool {
+                return $id === RuntimeExceptionDependency::class;
+            }
         );
         $definition = new ParameterDefinition(
-            $this->getFirstParameter(static fn (RuntimeExceptionDependency|string|null $d = null) => 42),
+            $this->getFirstParameter(static function ($d = null) {
+                return 42;
+            }),
         );
 
         $this->expectException(RuntimeException::class);
@@ -397,10 +422,14 @@ final class ParameterDefinitionTest extends TestCase
                 }
                 throw new NotFoundException($id);
             },
-            static fn (string $id): bool => $id === CircularReferenceExceptionDependency::class
+            static function (string $id) : bool {
+                return $id === CircularReferenceExceptionDependency::class;
+            }
         );
         $definition = new ParameterDefinition(
-            $this->getFirstParameter(static fn (CircularReferenceExceptionDependency|string|null $d = null) => 42),
+            $this->getFirstParameter(static function ($d = null) {
+                return 42;
+            }),
         );
 
         $result = $definition->resolve($container);

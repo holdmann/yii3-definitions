@@ -59,7 +59,9 @@ final class DefinitionExtractorTest extends TestCase
     public function testUnionScalarTypes(): void
     {
         $definition = DefinitionExtractor::fromFunction(
-            new ReflectionFunction(static fn (string|int $a): bool => true),
+            new ReflectionFunction(static function ($a) : bool {
+                return true;
+            }),
         )['a'];
 
         $this->assertInstanceOf(ParameterDefinition::class, $definition);

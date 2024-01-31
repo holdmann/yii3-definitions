@@ -20,7 +20,10 @@ final class DefinitionExtractorTest extends TestCase
         ]);
 
         $definitions = DefinitionExtractor::fromFunction(
-            new ReflectionFunction(static fn (Chair $chair = new RedChair()) => true)
+            new ReflectionFunction(static function (Chair $chair = null) {
+                $chair = $chair ?? new RedChair();
+                return true;
+            })
         );
 
         $this->assertInstanceOf(Chair::class, $definitions['chair']->resolve($container));
@@ -33,7 +36,10 @@ final class DefinitionExtractorTest extends TestCase
         ]);
 
         $definitions = DefinitionExtractor::fromFunction(
-            new ReflectionFunction(static fn (?Chair $chair = new RedChair()) => true)
+            new ReflectionFunction(static function (?Chair $chair = null) {
+                $chair = $chair ?? new RedChair();
+                return true;
+            })
         );
 
         $this->assertInstanceOf(Chair::class, $definitions['chair']->resolve($container));
@@ -44,7 +50,10 @@ final class DefinitionExtractorTest extends TestCase
         $container = new SimpleContainer();
 
         $definitions = DefinitionExtractor::fromFunction(
-            new ReflectionFunction(static fn (Chair $chair = new RedChair()) => true)
+            new ReflectionFunction(static function (Chair $chair = null) {
+                $chair = $chair ?? new RedChair();
+                return true;
+            })
         );
 
         $this->assertInstanceOf(RedChair::class, $definitions['chair']->resolve($container));
@@ -55,7 +64,10 @@ final class DefinitionExtractorTest extends TestCase
         $container = new SimpleContainer();
 
         $definitions = DefinitionExtractor::fromFunction(
-            new ReflectionFunction(static fn (?Chair $chair = new RedChair()) => true)
+            new ReflectionFunction(static function (?Chair $chair = null) {
+                $chair = $chair ?? new RedChair();
+                return true;
+            })
         );
 
         $this->assertInstanceOf(RedChair::class, $definitions['chair']->resolve($container));

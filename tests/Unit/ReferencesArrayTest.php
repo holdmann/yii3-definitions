@@ -37,7 +37,9 @@ final class ReferencesArrayTest extends TestCase
         $definitions = [
             'key1' => 'first',
             'key2' => 'second',
-            static fn () => 'thrid',
+            static function () {
+                return 'thrid';
+            },
         ];
 
         $references = DynamicReferencesArray::from($definitions);

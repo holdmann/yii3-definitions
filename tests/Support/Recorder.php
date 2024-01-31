@@ -6,13 +6,21 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class Recorder
 {
-    private static array $staticRecord = [];
-    private array $record = [];
+    /**
+     * @var mixed[]
+     */
+    private static $staticRecord = [];
+    /**
+     * @var mixed[]
+     */
+    private $record = [];
 
     public function __call($name, $arguments)
     {
         $arguments = array_map(
-            static fn ($argument) => get_debug_type($argument),
+            static function ($argument) {
+                return get_debug_type($argument);
+            },
             $arguments,
         );
 
@@ -22,7 +30,9 @@ final class Recorder
     public static function __callStatic($name, $arguments)
     {
         $arguments = array_map(
-            static fn ($argument) => get_debug_type($argument),
+            static function ($argument) {
+                return get_debug_type($argument);
+            },
             $arguments,
         );
 

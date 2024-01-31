@@ -19,9 +19,13 @@ use Yiisoft\Definitions\Exception\InvalidConfigException;
  */
 final class ParameterDefinition implements DefinitionInterface
 {
-    public function __construct(
-        private ReflectionParameter $parameter
-    ) {
+    /**
+     * @var \ReflectionParameter
+     */
+    private $parameter;
+    public function __construct(ReflectionParameter $parameter)
+    {
+        $this->parameter = $parameter;
     }
 
     public function getReflection(): ReflectionParameter
@@ -44,7 +48,10 @@ final class ParameterDefinition implements DefinitionInterface
         return $this->parameter->isDefaultValueAvailable();
     }
 
-    public function resolve(ContainerInterface $container): mixed
+    /**
+     * @return mixed
+     */
+    public function resolve(ContainerInterface $container)
     {
         $type = $this->parameter->getType();
 
@@ -98,6 +105,7 @@ final class ParameterDefinition implements DefinitionInterface
 
     /**
      * @throws NotInstantiableException
+     * @return mixed
      */
     private function resolveVariadicOrBuiltinOrIntersectionOrNonTyped(): mixed
     {

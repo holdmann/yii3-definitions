@@ -61,7 +61,9 @@ final class DefinitionResolverTest extends TestCase
         $engineMarkOne = new EngineMarkOne();
         $definitions['value'] = new ValueDefinition($engineMarkOne);
 
-        $reflection = new ReflectionFunction(static fn (...$a) => true);
+        $reflection = new ReflectionFunction(static function (...$a) {
+            return true;
+        });
         $definitions['parameter'] = new ParameterDefinition($reflection->getParameters()[0]);
 
         $definitions['reference'] = Reference::to('int');
