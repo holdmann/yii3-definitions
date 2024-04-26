@@ -107,7 +107,7 @@ final class ParameterDefinition implements DefinitionInterface
      * @throws NotInstantiableException
      * @return mixed
      */
-    private function resolveVariadicOrBuiltinOrIntersectionOrNonTyped(): mixed
+    private function resolveVariadicOrBuiltinOrIntersectionOrNonTyped()
     {
         if ($this->parameter->isDefaultValueAvailable()) {
             return $this->parameter->getDefaultValue();
@@ -145,7 +145,7 @@ final class ParameterDefinition implements DefinitionInterface
      *
      * @return mixed Ready to use object or null if definition can not be resolved and is marked as optional.
      */
-    private function resolveUnionType(ReflectionUnionType $parameterType, ContainerInterface $container): mixed
+    private function resolveUnionType(ReflectionUnionType $parameterType, ContainerInterface $container)
     {
         $types = $parameterType->getTypes();
         $class = implode('|', $types);

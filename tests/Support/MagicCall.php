@@ -6,12 +6,17 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class MagicCall
 {
-    private array $record = [];
+    /**
+     * @var mixed[]
+     */
+    private $record = [];
 
     public function __call($name, $arguments)
     {
         $arguments = array_map(
-            static fn ($argument) => get_debug_type($argument),
+            static function ($argument) {
+                return get_debug_type($argument);
+            },
             $arguments,
         );
 

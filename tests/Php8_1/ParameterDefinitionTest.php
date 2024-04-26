@@ -19,7 +19,9 @@ final class ParameterDefinitionTest extends TestCase
         $container = new SimpleContainer();
 
         $definition = new ParameterDefinition(
-            $this->getFirstParameter(fn (GearBox&stdClass $class) => true)
+            $this->getFirstParameter(function ($class) {
+                return true;
+            })
         );
 
         $this->expectException(NotInstantiableException::class);
