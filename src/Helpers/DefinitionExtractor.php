@@ -42,7 +42,7 @@ final class DefinitionExtractor
 
         try {
             $reflectionClass = new ReflectionClass($class);
-        } catch (ReflectionException) {
+        } catch (ReflectionException $exception) {
             throw new NotInstantiableClassException($class);
         }
 

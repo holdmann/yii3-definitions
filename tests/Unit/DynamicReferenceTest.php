@@ -56,7 +56,7 @@ final class DynamicReferenceTest extends TestCase
 
     public function testCallable(): void
     {
-        $reference = DynamicReference::to(self::callableDefinition(...));
+        $reference = DynamicReference::to(\Closure::fromCallable([self::class, 'callableDefinition']));
 
         $container = new SimpleContainer([
             ContainerInterface::class => &$container,

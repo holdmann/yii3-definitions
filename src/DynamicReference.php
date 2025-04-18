@@ -36,8 +36,9 @@ final class DynamicReference implements ReferenceInterface
 
     /**
      * @throws InvalidConfigException
+     * @param mixed $definition
      */
-    private function __construct(mixed $definition)
+    private function __construct($definition)
     {
         if (is_object($definition) && !is_callable($definition)) {
             throw new InvalidConfigException('DynamicReference don\'t support object as definition.');
@@ -50,13 +51,17 @@ final class DynamicReference implements ReferenceInterface
      * @see Normalizer
      *
      * @throws InvalidConfigException If definition is not valid.
+     * @param mixed $id
      */
-    public static function to(mixed $id): self
+    public static function to($id): self
     {
         return new self($id);
     }
 
-    public function resolve(ContainerInterface $container): mixed
+    /**
+     * @return mixed
+     */
+    public function resolve(ContainerInterface $container)
     {
         return $this->definition->resolve($container);
     }

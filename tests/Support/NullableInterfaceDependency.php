@@ -6,9 +6,11 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class NullableInterfaceDependency
 {
-    public function __construct(
-        private ?EngineInterface $engine,
-    ) {}
+    private ?EngineInterface $engine;
+    public function __construct(?EngineInterface $engine)
+    {
+        $this->engine = $engine;
+    }
 
     public function getEngine(): ?EngineInterface
     {

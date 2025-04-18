@@ -6,8 +6,17 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class Bike
 {
-    public function __construct(
-        public string|ColorInterface $color,
-        public EngineInterface $engine,
-    ) {}
+    /**
+     * @var string|\Yiisoft\Definitions\Tests\Support\ColorInterface
+     */
+    public $color;
+    public EngineInterface $engine;
+    /**
+     * @param string|\Yiisoft\Definitions\Tests\Support\ColorInterface $color
+     */
+    public function __construct($color, EngineInterface $engine)
+    {
+        $this->color = $color;
+        $this->engine = $engine;
+    }
 }

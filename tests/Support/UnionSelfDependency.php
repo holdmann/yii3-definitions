@@ -6,5 +6,8 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class UnionSelfDependency
 {
-    public function __construct(self|ColorInterface $a) {}
+    /**
+     * @param $this|\Yiisoft\Definitions\Tests\Support\ColorInterface $a
+     */
+    public function __construct($a) {}
 }

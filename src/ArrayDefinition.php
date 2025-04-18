@@ -30,6 +30,9 @@ use function sprintf;
  */
 final class ArrayDefinition implements DefinitionInterface
 {
+    private string $class;
+    private array $constructorArguments;
+    private array $methodsAndProperties;
     public const CLASS_NAME = 'class';
     public const CONSTRUCTOR = '__construct()';
 
@@ -45,11 +48,12 @@ final class ArrayDefinition implements DefinitionInterface
      * @psalm-param class-string $class
      * @psalm-param array<string, MethodOrPropertyItem> $methodsAndProperties
      */
-    private function __construct(
-        private string $class,
-        private array $constructorArguments,
-        private array $methodsAndProperties,
-    ) {}
+    private function __construct(string $class, array $constructorArguments, array $methodsAndProperties)
+    {
+        $this->class = $class;
+        $this->constructorArguments = $constructorArguments;
+        $this->methodsAndProperties = $methodsAndProperties;
+    }
 
     /**
      * @param ContainerInterface|null $referenceContainer Container to resolve references with.
@@ -181,7 +185,7 @@ final class ArrayDefinition implements DefinitionInterface
     private function resolveFunctionArguments(
         ContainerInterface $container,
         array $dependencies,
-        array $arguments,
+        array $arguments
     ): array {
         $isIntegerIndexed = $this->isIntegerIndexed($arguments);
         $dependencyIndex = 0;

@@ -6,11 +6,22 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class UnionCar
 {
-    public function __construct(
-        private NonExistingEngine|EngineMarkOne|EngineMarkTwo $engine,
-    ) {}
+    /**
+     * @var \Yiisoft\Definitions\Tests\Support\NonExistingEngine|\Yiisoft\Definitions\Tests\Support\EngineMarkOne|\Yiisoft\Definitions\Tests\Support\EngineMarkTwo
+     */
+    private $engine;
+    /**
+     * @param \Yiisoft\Definitions\Tests\Support\NonExistingEngine|\Yiisoft\Definitions\Tests\Support\EngineMarkOne|\Yiisoft\Definitions\Tests\Support\EngineMarkTwo $engine
+     */
+    public function __construct($engine)
+    {
+        $this->engine = $engine;
+    }
 
-    public function getEngine(): NonExistingEngine|EngineMarkOne|EngineMarkTwo
+    /**
+     * @return \Yiisoft\Definitions\Tests\Support\NonExistingEngine|\Yiisoft\Definitions\Tests\Support\EngineMarkOne|\Yiisoft\Definitions\Tests\Support\EngineMarkTwo
+     */
+    public function getEngine()
     {
         return $this->engine;
     }

@@ -90,7 +90,6 @@ final class ArrayDefinitionHelperTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataBase')]
     public function testBase(array $expected, array $configs): void
     {
         $result = ArrayDefinitionHelper::merge(...$configs);
@@ -138,7 +137,6 @@ final class ArrayDefinitionHelperTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataInvalidConfigException')]
     public function testInvalidConfigException(string $expectedMessage, array $configs): void
     {
         $this->expectException(InvalidConfigException::class);

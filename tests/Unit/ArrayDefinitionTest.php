@@ -47,19 +47,15 @@ final class ArrayDefinitionTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataConstructor')]
     public function testConstructor(?string $name, ?string $version, array $constructorArguments): void
     {
         $container = new SimpleContainer();
-
         $definition = ArrayDefinition::fromConfig([
             ArrayDefinition::CLASS_NAME => Phone::class,
             ArrayDefinition::CONSTRUCTOR => $constructorArguments,
         ]);
-
         /** @var Phone $phone */
         $phone = $definition->resolve($container);
-
         self::assertSame($name, $phone->getName());
         self::assertSame($version, $phone->getVersion());
     }
@@ -156,18 +152,14 @@ final class ArrayDefinitionTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataSetProperties')]
     public function testSetProperties(bool $dev, ?string $codeName, array $setProperties): void
     {
         $container = new SimpleContainer();
-
         $definition = ArrayDefinition::fromConfig(array_merge([
             ArrayDefinition::CLASS_NAME => Phone::class,
         ], $setProperties));
-
         /** @var Phone $phone */
         $phone = $definition->resolve($container);
-
         self::assertSame($dev, $phone->dev);
         self::assertSame($codeName, $phone->codeName);
     }
@@ -204,21 +196,17 @@ final class ArrayDefinitionTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataCallMethods')]
     public function testCallMethods(?string $id, array $apps, array $callMethods): void
     {
         $container = new SimpleContainer();
-
         $definition = ArrayDefinition::fromConfig(array_merge(
             [
                 ArrayDefinition::CLASS_NAME => Phone::class,
             ],
             $callMethods,
         ));
-
         /** @var Phone $phone */
         $phone = $definition->resolve($container);
-
         self::assertSame($id, $phone->getId());
         self::assertSame($apps, $phone->getApps());
     }
@@ -273,22 +261,18 @@ final class ArrayDefinitionTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataMethodAutowiring')]
     public function testMethodAutowiring(?string $expectedName, ?string $expectedEngine, array $data): void
     {
         $container = new SimpleContainer([
             EngineInterface::class => new EngineMarkOne(),
             'mark2' => new EngineMarkTwo(),
         ]);
-
         $definition = ArrayDefinition::fromConfig([
             ArrayDefinition::CLASS_NAME => Mouse::class,
             'setNameAndEngine()' => $data,
         ]);
-
         /** @var Mouse $mouse */
         $mouse = $definition->resolve($container);
-
         self::assertSame($expectedName, $mouse->getName());
         self::assertInstanceOf($expectedEngine, $mouse->getEngine());
     }
@@ -341,23 +325,15 @@ final class ArrayDefinitionTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataMethodVariadic')]
-    public function testMethodVariadic(
-        ?string $expectedName,
-        array $expectedColors,
-        array $data,
-        array $containerDefinitions = [],
-    ): void {
+    public function testMethodVariadic(?string $expectedName, array $expectedColors, array $data, array $containerDefinitions = []): void
+    {
         $container = new SimpleContainer($containerDefinitions);
-
         $definition = ArrayDefinition::fromConfig([
             ArrayDefinition::CLASS_NAME => Mouse::class,
             'setNameAndColors()' => $data,
         ]);
-
         /** @var Mouse $mouse */
         $mouse = $definition->resolve($container);
-
         self::assertSame($expectedName, $mouse->getName());
         self::assertSame($expectedColors, $mouse->getColors());
     }

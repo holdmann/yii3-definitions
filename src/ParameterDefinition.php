@@ -21,9 +21,14 @@ use function sprintf;
  */
 final class ParameterDefinition implements DefinitionInterface
 {
-    public function __construct(
-        private readonly ReflectionParameter $parameter,
-    ) {}
+    /**
+     * @readonly
+     */
+    private ReflectionParameter $parameter;
+    public function __construct(ReflectionParameter $parameter)
+    {
+        $this->parameter = $parameter;
+    }
 
     public function getReflection(): ReflectionParameter
     {
@@ -45,7 +50,10 @@ final class ParameterDefinition implements DefinitionInterface
         return $this->parameter->isDefaultValueAvailable();
     }
 
-    public function resolve(ContainerInterface $container): mixed
+    /**
+     * @return mixed
+     */
+    public function resolve(ContainerInterface $container)
     {
         $type = $this->parameter->getType();
 
@@ -98,8 +106,9 @@ final class ParameterDefinition implements DefinitionInterface
 
     /**
      * @throws NotInstantiableException
+     * @return mixed
      */
-    private function resolveVariadicOrBuiltinOrIntersectionOrNonTyped(): mixed
+    private function resolveVariadicOrBuiltinOrIntersectionOrNonTyped()
     {
         if ($this->parameter->isDefaultValueAvailable()) {
             return $this->parameter->getDefaultValue();
@@ -137,7 +146,7 @@ final class ParameterDefinition implements DefinitionInterface
      *
      * @return mixed Ready to use object or null if definition can not be resolved and is marked as optional.
      */
-    private function resolveUnionType(ReflectionUnionType $parameterType, ContainerInterface $container): mixed
+    private function resolveUnionType(ReflectionUnionType $parameterType, ContainerInterface $container)
     {
         $types = $parameterType->getTypes();
         $class = implode('|', $types);

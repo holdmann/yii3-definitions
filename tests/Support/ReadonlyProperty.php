@@ -6,5 +6,8 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class ReadonlyProperty
 {
-    public readonly string $var;
+    /**
+     * @readonly
+     */
+    public string $var;
 }

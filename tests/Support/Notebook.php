@@ -6,7 +6,15 @@ namespace Yiisoft\Definitions\Tests\Support;
 
 final class Notebook
 {
-    public function __construct(
-        public \NotExist1|\NotExist2 $notExist,
-    ) {}
+    /**
+     * @var \NotExist1|\NotExist2
+     */
+    public $notExist;
+    /**
+     * @param \NotExist1|\NotExist2 $notExist
+     */
+    public function __construct($notExist)
+    {
+        $this->notExist = $notExist;
+    }
 }

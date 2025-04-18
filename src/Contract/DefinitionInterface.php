@@ -25,5 +25,5 @@ interface DefinitionInterface
      *
      * @return mixed|null Ready to use object or null if definition can not be resolved and is marked as optional.
      */
-    public function resolve(ContainerInterface $container): mixed;
+    public function resolve(ContainerInterface $container);
 }

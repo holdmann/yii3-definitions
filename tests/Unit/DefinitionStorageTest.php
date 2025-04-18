@@ -235,7 +235,7 @@ final class DefinitionStorageTest extends TestCase
 
         try {
             $storage->get(Chicken::class);
-        } catch (CircularReferenceException) {
+        } catch (CircularReferenceException $exception) {
             $stack = $storage->getBuildStack();
         }
 
@@ -262,19 +262,12 @@ final class DefinitionStorageTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataHas')]
-    public function testHas(
-        bool $expected,
-        string $id,
-        array $definitions = [],
-        ?ContainerInterface $delegateContainer = null,
-    ): void {
+    public function testHas(bool $expected, string $id, array $definitions = [], ?ContainerInterface $delegateContainer = null): void
+    {
         $storage = new DefinitionStorage($definitions);
-
         if ($delegateContainer !== null) {
             $storage->setDelegateContainer($delegateContainer);
         }
-
         $this->assertSame($expected, $storage->has($id));
     }
 }

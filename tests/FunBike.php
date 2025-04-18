@@ -9,8 +9,21 @@ use Yiisoft\Definitions\Tests\Support\EngineInterface;
 
 final class FunBike
 {
-    public function __construct(
-        public string|ColorInterface $color,
-        public string|EngineInterface $engine,
-    ) {}
+    /**
+     * @var string|\Yiisoft\Definitions\Tests\Support\ColorInterface
+     */
+    public $color;
+    /**
+     * @var string|\Yiisoft\Definitions\Tests\Support\EngineInterface
+     */
+    public $engine;
+    /**
+     * @param string|\Yiisoft\Definitions\Tests\Support\ColorInterface $color
+     * @param string|\Yiisoft\Definitions\Tests\Support\EngineInterface $engine
+     */
+    public function __construct($color, $engine)
+    {
+        $this->color = $color;
+        $this->engine = $engine;
+    }
 }
